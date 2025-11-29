@@ -33,7 +33,13 @@ async function run (){
 
 
         app.get("/cars",async(req,res)=>{
-            const carsor = carsCollection.find();
+            console.log(req.query);
+            const providerEmail=req.query.providerEmail;
+            const query ={}
+            if(providerEmail){
+                query.providerEmail=providerEmail;
+            }
+            const carsor = carsCollection.find(query);
             const result= await carsor.toArray();
             res.send(result);
         })
