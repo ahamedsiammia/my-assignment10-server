@@ -58,6 +58,16 @@ async function run (){
         })
 
 
+
+app.get("/cars/email/:email", async (req, res) => {
+    const email = req.params.email; 
+    let query = { providerEmail: email };
+
+    const result = await carsCollection.find(query).toArray();
+    res.send(result);
+});
+
+
         app.delete("/cars/:id",async(req,res)=>{
             const id =req.params.id;
             const query ={_id: new ObjectId(id)};
