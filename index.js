@@ -34,10 +34,10 @@ async function run (){
 
         app.get("/cars",async(req,res)=>{
             console.log(req.query);
-            const providerEmail=req.query.providerEmail;
+            const email=req.query.email;
             const query ={}
-            if(providerEmail){
-                query.providerEmail=providerEmail;
+            if(email){
+                query.providerEmail=email;
             }
             const carsor = carsCollection.find(query);
             const result= await carsor.toArray();
