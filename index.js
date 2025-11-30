@@ -33,19 +33,13 @@ async function run (){
 
 
         app.get("/cars",async(req,res)=>{
-            console.log(req.query);
-            const email=req.query.email;
-            const query ={}
-            if(email){
-                query.providerEmail=email;
-            }
-            const carsor = carsCollection.find(query);
+            const carsor = carsCollection.find();
             const result= await carsor.toArray();
             res.send(result);
         })
         // latest cars
         app.get("/latest-cars",async(req,res)=>{
-            const carsor = carsCollection.find().limit(6);
+            const carsor = carsCollection.find().sort({postedAt:1}).limit(6);
             const result= await carsor.toArray();
             res.send(result);
         })
