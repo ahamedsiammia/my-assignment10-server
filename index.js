@@ -30,6 +30,7 @@ async function run (){
 
         const db =client.db("car_db");
         const carsCollection = db.collection("cars");
+        const bookingCollection = db.collection("booking");
 
 
         app.get("/cars",async(req,res)=>{
@@ -81,14 +82,32 @@ async function run (){
        })
        
 
-        // app.get("/cars",async(req,res)=>{
-        //     const email =req.params.email
-        //     const query ={providerEmail:email}
-        //     const result = await carsCollection.find(query).toArray()
-        //     res.send(result)
-        // })
 
 
+        // my booking 
+        app.post("/booking",async(req,res)=>{
+            let data =req.body;
+            data.status = "booking";
+            const id =req.body._id
+            const filter ={_id : new ObjectId(id)}
+            const update ={
+                $set:{
+                    status :"booking"
+                }
+            }
+            await carsCollection.updateOne(filter,update)
+            const result =await bookingCollection.insertOne(data)
+            res.send(result)
+        })
+
+        app.get("/booking/email/:eamil",async(req,res)=>{
+            const email =req.params.eamil;
+            const query ={booking_by:email}
+            const result =await bookingCollection.find(query).toArray()
+            res.send(result)
+        })
+
+// delete
         app.delete("/cars/:id",async(req,res)=>{
             const id =req.params.id;
             const query ={_id: new ObjectId(id)};
