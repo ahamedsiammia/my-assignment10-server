@@ -58,14 +58,35 @@ async function run (){
         })
 
 
+       // my listings car
+       app.get("/cars/email/:email", async (req, res) => {
+           const email = req.params.email; 
+           let query = { providerEmail: email };
+       
+           const result = await carsCollection.find(query).toArray();
+           res.send(result);
+       });
 
-app.get("/cars/email/:email", async (req, res) => {
-    const email = req.params.email; 
-    let query = { providerEmail: email };
+// update car api 
+       app.put("/cars/:id",async(req,res)=>{
+         const id =req.params.id;
+         const query ={_id : new ObjectId(id)}
+         const data = req.body
+         const filter = query
+         const update ={
+            $set:data 
+         };
+         const result =await carsCollection.updateOne(filter,update)
+         res.send(result)
+       })
+       
 
-    const result = await carsCollection.find(query).toArray();
-    res.send(result);
-});
+        // app.get("/cars",async(req,res)=>{
+        //     const email =req.params.email
+        //     const query ={providerEmail:email}
+        //     const result = await carsCollection.find(query).toArray()
+        //     res.send(result)
+        // })
 
 
         app.delete("/cars/:id",async(req,res)=>{
